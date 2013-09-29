@@ -17,6 +17,8 @@ NAME7 = sign.vhd
 NAME8 = sl2.vhd
 NAME9 = datapath.vhd
 NAME10 = datapath_tb.vhd
+NAME11 = components.vhd
+NAMETB = datapath_tb
 #--------------------------------------------------
 
 all: vhdl
@@ -31,9 +33,10 @@ vhdl:
 	$(GHDL) $(ANALIZE) $(NAME6)
 	$(GHDL) $(ANALIZE) $(NAME7)
 	$(GHDL) $(ANALIZE) $(NAME8)
+	$(GHDL) $(ANALIZE) $(NAME11) 
 	$(GHDL) $(ANALIZE) $(NAME9) $(NAME10)
 	$(GHDL) $(ELABORATE) datapath_tb
 	$(GHDL) $(RUN) datapath_tb --stop-time=50ns --vcd=data.vcd
 
 clean:
-	rm *.s *.o *.cf *.lst *.vcd $(NAMETB)
+	rm -f *.o *.cf *.vcd $(NAMETB) *~
