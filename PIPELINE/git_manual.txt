@@ -1,0 +1,3 @@
+$ git clone git://github.com/nanomolina/MIPS
+
+$git push git@github.com:nanomolina/MIPS
