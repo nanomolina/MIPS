@@ -41,7 +41,7 @@ package components is
 		);
 	end component;
 
-	component sl2
+	component sl2 
 		port (
 			a: in std_logic_vector (31 downto 0);
 	        y: out std_logic_vector (31 downto 0)
@@ -66,6 +66,7 @@ package components is
 		);	
 	end component;
 
+		);
 	component regfile
 		port (
 			--OJO cambie de 6 a 5 BITS imput!!
