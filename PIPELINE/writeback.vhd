@@ -5,8 +5,7 @@ entity writeback is
     port(
         AluOutW, ReadDataW: in std_logic_vector(31 downto 0);
         MemToReg: in std_logic;
-        ResultW: out std_logic_vector(31 downto 0)
-    );
+        ResultW: out std_logic_vector(31 downto 0));
 end entity;
 
 architecture wb_arq of writeback is
@@ -15,8 +14,7 @@ architecture wb_arq of writeback is
         port (
             d0, d1: in std_logic_vector((MAX-1) downto 0);
             s:   in std_logic;     
-            y: out std_logic_vector((MAX-1) downto 0)
-        );
+            y: out std_logic_vector((MAX-1) downto 0));
     end component;
 
 begin
@@ -24,6 +22,5 @@ begin
                     do => AluOutW,
                     d1 => ReadDataW,
                     s  => MemToReg,
-                    y  => ResultW  --salida
-                );
+                    y  => ResultW);  --salida
 end architecture;

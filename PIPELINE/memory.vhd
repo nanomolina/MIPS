@@ -6,8 +6,7 @@ entity memory is
         AluOutM, WriteDataM: in std_logic_vector(31 downto 0);
         ZeroM, MemWrite, Branch, clk, dump: in std_logic;
         ReadDataM: out std_logic_vector(31 downto 0);
-        PCSrcM: out std_logic
-    );
+        PCSrcM: out std_logic);
 end entity;
 
 architecture e_arq of memory is
@@ -16,8 +15,7 @@ architecture e_arq of memory is
             a, wd:	in std_logic_vector (31 downto 0);
             clk,we:	in std_logic;
             rd:		out std_logic_vector (31 downto 0);
-            dump: 	in std_logic
-        );
+            dump: 	in std_logic);
     end component;
 
 begin
@@ -27,6 +25,5 @@ begin
                     clk  => clk,
                     we   => MemWrite,
                     rd   => ReadDataM, --salida
-                    dump => dump
-                );
+                    dump => dump);
 end architecture;

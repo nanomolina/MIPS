@@ -8,8 +8,7 @@ entity execute is
         RegDst, AluSrc, AluControl: in std_logic;
         WriteRegE: out std_logic_vector(4 downto 0);
         ZeroE: out std_logic;
-        AluOutE, WriteDataE, PCBranchE: out std_logic_vector(31 downto 0)
-    );
+        AluOutE, WriteDataE, PCBranchE: out std_logic_vector(31 downto 0));
 end entity;
 
 architecture e_arq of execute is
