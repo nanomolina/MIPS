@@ -26,4 +26,5 @@ begin
                     we   => MemWrite,
                     rd   => ReadDataM, --salida
                     dump => dump);
+    PCSrcM <= ZeroM and Branch; --salida
 end architecture;

@@ -3,8 +3,8 @@ use ieee.std_logic_1164.all;
 
 entity fetch is
     port( 
-        jumpM, PcSrcM, clk, reset: in std_logic;
-        PcBranchM: in std_logic_vector(31 downto 0);
+        jumpM, PcSrc, clk, reset: in std_logic;
+        PcBranchF: in std_logic_vector(31 downto 0);
         InstrF, PCF, PCPlus4F: out std_logic_vector(31 downto 0));
 end entity;
 
@@ -45,8 +45,8 @@ begin
     IMEMIN <= PCF(7 downto 2); 
     mux2_1: mux2 port map(
                     d0 => PCPlus4F1,
-                    d1 => PcBranchM,
-                    s => PCSrcM,
+                    d1 => PcBranchF,
+                    s => PCSrc,
                     y => PCNext);
     mux2_2: mux2 port map(
                     d0 => PCNext,
