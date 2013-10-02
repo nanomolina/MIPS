@@ -37,8 +37,8 @@ begin
                     a => InstrD(15 downto 0),
                     y => SignImmD);  --salida
 
-    Rtd <= InstrD(20 downto 16); --salida
-    RdD <= InstrD(15 downto 11); --salida
+    Rtd1 <= InstrD(20 downto 16); --salida
+    RdD1 <= InstrD(15 downto 11); --salida
 
 end architecture;
 

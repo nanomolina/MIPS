@@ -65,7 +65,7 @@ begin
                     rd => Instrf_s);
 
     PCJump <= PCPlus4F1(31 downto 28) & Instrf_s(25 downto 0) & "00";
-    IMEMIN <= PCF_s(7 downto 2); 
+    IMEMIN <= PCF(7 downto 2); 
     InstrF <= Instrf_s;
     PCF <= PCF_s; --Creo que no lo usamos--
     PCPlus4F <= PCPlus4F1;

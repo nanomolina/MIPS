@@ -17,7 +17,7 @@ NAME7 = sign.vhd
 NAME8 = sl2.vhd
 NAME9 = datapath.vhd
 NAME10 = datapath_tb.vhd
-
+NAME11 = components.vhd
 NAMETB = datapath_tb
 NAME12 = fetch.vhd
 NAME13 = decode.vhd
@@ -38,6 +38,7 @@ vhdl:
 	$(GHDL) $(ANALIZE) $(NAME6)
 	$(GHDL) $(ANALIZE) $(NAME7)
 	$(GHDL) $(ANALIZE) $(NAME8)
+	$(GHDL) $(ANALIZE) $(NAME11)
 	$(GHDL) $(ANALIZE) $(NAME12)
 	$(GHDL) $(ANALIZE) $(NAME13)
 	$(GHDL) $(ANALIZE) $(NAME14)

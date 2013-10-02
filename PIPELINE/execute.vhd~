@@ -6,7 +6,7 @@ entity execute is
         RD1E, RD2E, PCPlus4E, SignImmE: in std_logic_vector(31 downto 0);
         RtE, RdE: in std_logic_vector(4 downto 0);
         RegDst, AluSrc: in std_logic;
-        AluControl: in std_logic_vector(2 downto 0);
+        AluControl: in std_logic_vector(2 downto 9);
         WriteRegE: out std_logic_vector(4 downto 0);
         ZeroE: out std_logic;
         AluOutE, WriteDataE, PCBranchE: out std_logic_vector(31 downto 0));

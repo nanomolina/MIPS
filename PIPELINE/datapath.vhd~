@@ -125,5 +125,5 @@ begin
                             MemToReg  => MemToReg,
                             ResultW   => Wd3_s
                         );
-instr <= instrD_s;
+instr <= instrD;
 end arq_datapath;

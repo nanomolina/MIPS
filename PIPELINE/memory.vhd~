@@ -19,7 +19,7 @@ architecture e_arq of memory is
     end component;
 
 begin
-    dmem1: dmem port map(
+    dmem: dmem port map(
                     a    => AluOutM,
                     wd   => WriteDataM,
                     clk  => clk,

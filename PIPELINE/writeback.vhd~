@@ -19,7 +19,7 @@ architecture wb_arq of writeback is
 
 begin
     mux2_1: mux2 port map (
-                    d0 => AluOutW,
+                    do => AluOutW,
                     d1 => ReadDataW,
                     s  => MemToReg,
                     y  => ResultW);  --salida
