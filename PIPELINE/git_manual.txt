@@ -8,4 +8,6 @@ $ git push git@github.com:nanomolina/MIPS
 
 --actualizar repositorio--
 $ git remote update
+--actualizar
+$ git pull
 
