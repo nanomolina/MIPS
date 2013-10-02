@@ -7,5 +7,5 @@ $ git commit -m "message"
 $ git push git@github.com:nanomolina/MIPS
 
 --actualizar repositorio--
-$ git remote update
+$ git pull
 
