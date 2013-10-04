@@ -55,7 +55,7 @@ begin
                     d => PC1,
                     clk => clk,
                     rst => reset,
-                    q => PCF);
+                    q => PCF_s);
     adder1: adder port map(
                     a => PCF_s,
                     b => QUATRO,
@@ -67,7 +67,7 @@ begin
     PCJump <= PCPlus4F1(31 downto 28) & Instrf_s(25 downto 0) & "00";
     IMEMIN <= PCF_s(7 downto 2); 
     InstrF <= Instrf_s;
-    PCF <= PCF_s; --Creo que no lo usamos--
+    PCF <= PCF_s;
     PCPlus4F <= PCPlus4F1;
 
 end architecture;

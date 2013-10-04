@@ -12,8 +12,10 @@ entity datapath is
         Jump : in std_logic;
         AluControl : in std_logic_vector(2 downto 0);
         dump : in std_logic;
+
         pc : out std_logic_vector(31 downto 0);
         instr : out std_logic_vector(31 downto 0);
+
         reset : in std_logic;
         clk : in std_logic);
 end entity;
@@ -30,7 +32,7 @@ architecture arq_datapath of datapath is
             A3: in std_logic_vector(4 downto 0);
             InstrD, Wd3: in std_logic_vector(31 downto 0);
             RegWrite, clk: in std_logic;
-            Rtd, RdD: out std_logic_vector(4 downto 0);
+            RtD, RdD: out std_logic_vector(4 downto 0);
             SignImmD, RD1D, RD2D: out std_logic_vector(31 downto 0));
     end component;
     component execute
@@ -59,46 +61,44 @@ architecture arq_datapath of datapath is
 
 
 signal PcBranchM_s, InstrF_s, PCF_s, PCPlus4F_s,
-       InstrD_s, SignImmD_s, RD1D_s, RD2D_s,RD2E_s, RD1E_s,
-       PCPlus4E_s, SignImmE_s, AluOutE_s, WriteDataE_s,
-       PcBranchE_s, AluOutM_s, WriteDataM_s, ReadDataM_s,
-       AluOutW_s, ReadDataW_s, ResultW_s, Wd3_s : std_logic_vector(31 downto 0);
+       InstrD_s,RD2E_s, RD1E_s, SignImmE_s, 
+       AluOutM_s, WriteDataM_s, ReadDataW_s,
+       ResultW_s : std_logic_vector(31 downto 0);
 
-signal Jump_s, ZeroE_s, ZeroM_s, PcSrcM_s : std_logic;
+signal ZeroM_s, PcSrcM_s : std_logic;
 
-signal A3_s, RtD_s, RdD_s, RtE_s, RdE_s,
-         WriteRegE_s: std_logic_vector(4 downto 0);
+signal A3_s, RtE_s, RdE_s : std_logic_vector(4 downto 0);
 
 begin
     Fetch1: fetch port map(
-                    jumpM     => Jump_s,
-                    PcSrcM     => PCSrcM_s,
+                    jumpM     => Jump,
+                    PcSrcM    => PCSrcM_s, --changing
                     clk       => clk,
                     reset     => reset,
-                    PcBranchM => PCBranchE_s,
-                    InstrF    => InstrD_s,
+                    PcBranchM => PCBranchM_s,
+                    InstrF    => InstrD_s, --changing
                     PCF       => pc,
-                    PCPlus4F  => PCPlus4E_s
+                    PCPlus4F  => PCPlus4F_s --changing
                 );
     Decode1: decode port map(
-                        A3       => WriteRegE_s,
-                        InstrD   => InstrF_s,
+                        A3       => A3_s, --changing
+                        InstrD   => InstrD_s, --changing
                         Wd3      => ResultW_s,
                         RegWrite => RegWrite,
                         clk      => clk,
-                        Rtd      => RtE_s,
+                        RtD      => RtE_s,
                         RdD      => RdE_s,
                         SignImmD => SignImmE_s,
                         RD1D     => RD1E_s,
                         RD2D     => RD2E_s
                     );
     Execute1: execute port map(
-                        RD1E       => RD1D_s,
-                        RD2E       => RD2D_s,
+                        RD1E       => RD1E_s, --changing
+                        RD2E       => RD2E_s,
                         PCPlus4E   => PCPlus4F_s,
-                        SignImmE   => SignImmD_s,
-                        RtE        => RtD_s,
-                        RdE        => RdD_s,
+                        SignImmE   => SignImmE_s, --changing
+                        RtE        => RtE_s, --changing
+                        RdE        => RdE_s,
                         RegDst     => RegDst,
                         AluSrc     => AluSrc,
                         AluControl => AluControl,
@@ -109,21 +109,23 @@ begin
                         PCBranchE  => PCBranchM_s
                     );
     Memory1: memory port map(
-                        AluOutM    => AluOutE_s,
-                        WriteDataM => WriteDataE_s,
-                        ZeroM      => ZeroE_s,
+                        AluOutM    => AluOutM_s, --changing
+                        WriteDataM => WriteDataM_s, --changing
+                        ZeroM      => ZeroM_s, --changing
                         MemWrite   => MemWrite,
                         Branch     => Branch,
                         clk        => clk,
                         dump       => dump,
                         ReadDataM  => ReadDataW_s,
-                        PCSrcM     => PCSrcM_s --Posee el mismo nombre (posible conflicto futuro)
+                        PCSrcM     => PCSrcM_s --Posee el mismo nombre (posible conflicto futuro) illak:Para nada!
                     );
     WriteBack1: writeback port map(
-                            AluOutW   => AluOutE_s,
-                            ReadDataW => ReadDataM_s,
+                            AluOutW   => AluOutM_s, --changing
+                            ReadDataW => ReadDataW_s, --changing
                             MemToReg  => MemToReg,
-                            ResultW   => Wd3_s
+                            ResultW   => ResultW_s --changing
                         );
+
+
 instr <= instrD_s;
 end arq_datapath;

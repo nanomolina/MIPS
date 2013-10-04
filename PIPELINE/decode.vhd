@@ -6,7 +6,7 @@ entity decode is
         A3: in std_logic_vector(4 downto 0);
         InstrD, Wd3: in std_logic_vector(31 downto 0);
         RegWrite, clk: in std_logic;
-        Rtd, RdD: out std_logic_vector(4 downto 0);
+        RtD, RdD: out std_logic_vector(4 downto 0);
         SignImmD, RD1D, RD2D: out std_logic_vector(31 downto 0));
 end entity;
 
@@ -37,7 +37,7 @@ begin
                     a => InstrD(15 downto 0),
                     y => SignImmD);  --salida
 
-    Rtd <= InstrD(20 downto 16); --salida
+    RtD <= InstrD(20 downto 16); --salida
     RdD <= InstrD(15 downto 11); --salida
 
 end architecture;

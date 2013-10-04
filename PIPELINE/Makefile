@@ -16,9 +16,7 @@ NAME6 = regfile.vhd
 NAME7 = sign.vhd
 NAME8 = sl2.vhd
 NAME9 = datapath.vhd
-NAME10 = datapath_tb.vhd
-
-NAMETB = datapath_tb
+NAMETB = pipeline_tb
 NAME12 = fetch.vhd
 NAME13 = decode.vhd
 NAME14 = execute.vhd
@@ -43,9 +41,12 @@ vhdl:
 	$(GHDL) $(ANALIZE) $(NAME14)
 	$(GHDL) $(ANALIZE) $(NAME15)
 	$(GHDL) $(ANALIZE) $(NAME16)
-	$(GHDL) $(ANALIZE) $(NAME9) $(NAME10)
-	$(GHDL) $(ELABORATE) datapath_tb
-	$(GHDL) $(RUN) datapath_tb --stop-time=50ns --vcd=data.vcd
+	$(GHDL) $(ANALIZE) $(NAME9)
+	$(GHDL) $(ANALIZE) controller.vhd maindec.vhd aludec.vhd
+	$(GHDL) $(ANALIZE) pipeline.vhd
+	$(GHDL) $(ANALIZE)  pipeline_tb.vhd
+	$(GHDL) $(ELABORATE) $(NAMETB)
+	$(GHDL) $(RUN) pipeline_tb --stop-time=250ns --vcd=data.vcd
 
 clean:
 	rm -f *.o *.cf *.vcd $(NAMETB) *~

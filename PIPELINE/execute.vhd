@@ -46,7 +46,7 @@ begin
     mux2_1: mux2 generic map (MAX=>5) port map (d0=>RtE,
                                                 d1=>RdE,
                                                 s=>RegDst,
-                                                y=>WriteRegE);
+                                                y=>WriteRegE); --salida
 
     sl21: sl2 port map(
                 a => SignImmE,
@@ -54,13 +54,15 @@ begin
     adder1: adder port map(
                 a => sl2_out,
                 b => PCPlus4E,
-                y => PCBranchE);
+                y => PCBranchE); --salida
     mux2_21: mux2 port map(
                 d0 => RD2E,
                 d1 => SignImmE,
                 s  => AluSrc,
                 y  => SrcBE);
-    WriteDataE <= RD2E; --salida
+    
+	WriteDataE <= RD2E; --salida
+
     Alu1: alu port map(
                 a => RD1E,
                 b => SrcBE,

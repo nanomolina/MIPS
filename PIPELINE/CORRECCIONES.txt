@@ -1,0 +1,12 @@
+Que es lo que fallaba:
+
+1) Las conexiones estaban para atras (demasiado!!!) Eliminé muchas, i.e no se
+necesitaban demasiadas señales (todavia hay que acomodar un poco).
+Funciona por que lo hice al "vuelo".
+
+*Tareas: eliminar señales que no se utilizan y cambiar algunos nombres...
+
+2) FETCH: Una señal estaba mal (PCF) por eso nunca podiamos calcular la
+siguiente instruction. Solucionado.
+
+3) Ahora imprime en output.dump (o como sea)

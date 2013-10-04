@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 
 entity maindec is
     port (Op: in std_logic_vector(5 downto 0);
-          MemToReg, MemWrite, Branch, AluSrc, RegDst, RegWrite,
+          MemToReg, MemWrite, Branch, AluSrc, RegDst, RegWrite, 
           Jump: out std_logic;
           AluOp: out std_logic_vector(1 downto 0));
 end entity;

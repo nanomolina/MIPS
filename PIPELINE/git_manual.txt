@@ -1,11 +1,33 @@
 --checkout de repositorio--
+<<<<<<< HEAD
 $ git clone git://github.com/nanomolina/MIPS
+=======
+$ git clone git://github.com/LMZTeam/laboratorio_arquitectura
+>>>>>>> 8b0b5c1b08101a9d33f21afe30e333bd758f70d7
 
 --subir los cambios locales--
 $ git add <files>
 $ git commit -m "message"
+<<<<<<< HEAD
 $ git push git@github.com:nanomolina/MIPS
 
---Sincronizar el directorio de trabajo con el del servidor--
+--actualizar repositorio--
+$ git remote update
+
+=======
+$ git push git@github.com:LMZTeam/laboratorio_arquitectura
+
+--Actualizar los repositorios--
+--Importante hacerlo cada vez que se ingresa antes de hacer commit--
 $ git pull
 
+--Estatus, Nos dice todo lo que debemos hace, mejor que el svnr--
+$ git status
+
+Attemping first test git hub
+    >Running Command
+    >Command Succesful
+    >Welcome!!
+    >Everything is good
+    >Exiting...
+>>>>>>> 8b0b5c1b08101a9d33f21afe30e333bd758f70d7

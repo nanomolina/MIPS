@@ -1,57 +1,51 @@
-library ieee;
-use ieee.std_logic_unsigned.all;
-use ieee.std_logic_1164.all;
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity alu is
-    port(
-        a, b: in std_logic_vector(31 downto 0);
-        alucontrol: in std_logic_vector(2 downto 0);
-        result: out std_logic_vector(31 downto 0);
+port(   a,b : in std_logic_vector(31 downto 0);
+        alucontrol : in std_logic_vector(2 downto 0);
+        result : out std_logic_vector(31 downto 0);
         zero: out std_logic
-    );
-end entity;
+        );
+end alu;
 
-architecture behavior of alu is
+architecture Behavioral of alu is
+
+--signal result : std_logic_vector(31 downto 0);
+
 begin
-process(a,b,alucontrol)
-    variable temp: std_logic_vector(31 downto 0);
-    begin
+
+process(alucontrol, a, b)
+begin
     case alucontrol is
-        when "000" =>
-            temp := a and b;
-        when "001" =>
-            temp := a or b;
-        when "010" =>
-            temp := a + b;
-        when "011" =>
-            temp := x"00000000"; --preguntar
-        when "100" =>
-            temp := a and not(b);
-        when "101" =>
-            temp := a or not(b);
-        when "110" =>
-            temp := a - b;
+        when "000" => 
+            result <= a and b;  --AND gate
+        when "001" => 
+            result <= a or b; --OR gate
+        when "010" => 
+            result <= a + b;  --addition
+        when "100" => 
+            result <= a nand b; --NAND gate               
+        when "101" => 
+            result <= a nor b;  --NOR gate
+        when "110" => 
+            result <= a - b;  --substraction   
         when "111" =>
-            if (a < b) then
-                temp := (others => '1');
-            elsif (a > b) then
-                temp := (others => '0');
+            if a < b then 
+                result <= (others => '1');
+            else
+                result <= (others => '0'); --SLT
             end if;
         when others =>
-            temp := x"00000000";
+            result <= "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU";
     end case;
-    if (temp = x"00000000") then
-        zero <= '1';
-    else
-        zero <= '0';
-    end if;
-
-    result <= temp;
-
-
+--    if (result = x"00000000") then
+--        zero <= '1';
+--    elsif (result = x"FFFFFFFF") then
+--        zero <= '0';
+--    end if;
 end process;
-end behavior;
-                
 
-
-
+end Behavioral;

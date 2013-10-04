@@ -15,32 +15,27 @@ entity regfile is
 end entity;
 
 architecture BH of regfile is
-constant ZERO : std_logic_vector (5 downto 0) := "000000";
+constant ZERO : std_logic_vector (4 downto 0) := "00000";
 --memoria: 64 palabras de 32 bits--
 type mem_reg is array (63 downto 0) of std_logic_vector(31 downto 0);
+signal mem_r : mem_reg := (OTHERS => x"00000000");
 --signal 
 
 begin
-	process (we3, clk)
-	variable temp1, temp2, temp3 : integer;
-	variable mem_r : mem_reg;
+	process (ra1, ra2, clk, mem_r)
+--	variable temp1, temp2, temp3 : integer;
+--	variable mem_r : mem_reg := (OTHERS => x"00000000");
 	begin
-		if (clk'event and clk='1') then
-			if (ra1 = ZERO or ra2 = ZERO ) then
-				rd1 <= x"00000000";
-				rd2 <= x"00000000";
-			else
-				temp2 := conv_integer(ra1);
-				temp3 := conv_integer(ra2);
-				--leo de mem
-				rd1 <= mem_r(temp2);
-				rd2 <= mem_r(temp3);
-			end if;
+		if (clk'event and clk='1'and we3='1') then 
+			mem_r(conv_integer(wa3)) <= wd3;
 		end if;
-		if (clk'event and clk='1' and we3='1') then
-			temp1 := conv_integer(wa3);
-			--escribo en mem
-			mem_r(temp1) := wd3;
+
+		if (ra1 = ZERO ) then rd1 <= x"00000000";
+		else rd1 <= mem_r(conv_integer(ra1));
+		end if;
+
+		if (ra2 = ZERO) then rd2 <= x"00000000";
+		else rd2 <= mem_r(conv_integer(ra2));
 		end if;
 	end process;
 end BH;

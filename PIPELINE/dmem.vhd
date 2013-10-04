@@ -22,6 +22,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 use STD.TEXTIO.all;
 use IEEE.STD_LOGIC_SIGNED.all;
+use ieee.numeric_std.all;
 
 --library WORK;
 --use WORK.components.all;
@@ -60,14 +61,21 @@ procedure memDump is
   end procedure memDump;
 
 begin
-   process(clk, a, mem)
+	process(clk, a, mem)
+	--edit
+	variable pos_a : integer;
+	
 	begin 
 	  if clk'event and clk = '1' and we = '1' then
-				mem(conv_integer(a(7 downto 2))) <= wd;
+				mem(to_integer(unsigned(a(7 downto 2)))) <= wd;
 	  end if;
-	   rd <= mem(conv_integer(a(7 downto 2))); -- word aligned
+	  if a = x"00000000" then rd <= x"00000000";
+	  else
+		pos_a := to_integer(unsigned(a(7 downto 2)));
+	    rd <= mem(pos_a); -- word aligned 
+	  end if;
 	end process;
-	
+
 	process(dump)
 	begin
 	 if dump = '1' then
