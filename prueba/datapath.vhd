@@ -160,73 +160,153 @@ architecture arq_datapath of datapath is
         );
     end component;
 
-    signal PcBranchE_s, InstrF_s, PCF_s, PCPlus4F_s,
-       Instr987_s,RD2D_s, RD1D_s, SignImmD_s, 
-       AluOutE_s, WriteDataE_s, ReadDataM_s,
-       ResultW_s : std_logic_vector(31 downto 0);
+    signal PCBranchE_out_s, InstrF_out_s, InstrIFID_out_s , PCF_s, PCPlus4F_out_s,
+       PCPlus4IFID_out_s, RD2D_out_s,RD2IDEX_out_s, RD1D_out_s,RD1IDEX_out_s, 
+        SignImmD_out_s,SignImmIDEX_out_s, 
+       AluOutE_out_s,AluOutEXMEM_out_s, WriteDataE_out_s,WriteDataEXMEM_out_s, ReadDataM_out_s,
+        ReadDataMEMWB_out_s,PCPlus4IDEX_out_s,
+       ResultW_s, PCBranchEXMEM_out_s, AluOutMEMWB_out_s: std_logic_vector(31 downto 0);
 
-    signal ZeroE_s, PcSrcM_s : std_logic;
+    signal ZeroE_out_s,ZeroEXMEM_out_s, PcSrcM_s,MemToRegIDEX_out_s, MemToRegEXMEM_out_s,
+            MemToRegMEMWB_out_s,MemWriteIDEX_out_s,BranchIDEX_out_s,BranchEXMEM_out_s,
+            AluSrcIDEX_out_s,RegDstIDEX_out_s,RegWriteIDEX_out_s,RegWriteEXMEM_out_s,
+            RegWriteMEMEB_out_s,JumpIDEX_out_s, JumpEXMEM_out_s,MemWriteEXMEM_out_s: std_logic;
 
-    signal A3E_s, RtD_s, RdD_s : std_logic_vector(4 downto 0);
+    signal A3E_out_s,A3EXMEM_out_s,A3MEMWB_out_s, RtD_out_s, RtIDEX_out_s, RdD_out_s, RdIDEX_out_s: std_logic_vector(4 downto 0);
+    signal AluControlIDEX_out_s: std_logic_vector(2 downto 0);
 
 begin
     Fetch1: fetch port map(
-                    jumpM     => Jump,
+                    jumpM     => JumpEXMEM_out_s,
                     PcSrcM    => PcSrcM_s,
                     clk       => clk,
                     reset     => reset,
-                    PcBranchM => PcBranchE_s,
-                    InstrF    => InstrF_s,
+                    PcBranchM => PCBranchEXMEM_out_s,
+                    InstrF    => InstrF_out_s,
                     PCF       => pc,
-                    PCPlus4F  => PCPlus4F_s
+                    PCPlus4F  => PCPlus4F_out_s
                 );
-    
+    IF_ID1: IF_ID port map(
+                    clk         => clk,
+                    instr_in    => InstrF_out_s,
+                    pcplus4_in  => PCPlus4F_out_s,
+                    instr_out   => InstrIFID_out_s,
+                    pcplus4_out => PCPlus4IFID_out_s
+                );
     Decode1: decode port map(
-                        A3       => A3E_s,
-                        InstrD   => InstrF_s,
+                        A3       => A3MEMWB_out_s,
+                        InstrD   => InstrIFID_out_s,
                         Wd3      => ResultW_s,
-                        RegWrite => RegWrite,
+                        RegWrite => RegWriteMEMEB_out_s,
                         clk      => clk,
-                        RtD      => RtD_s,
-                        RdD      => RdD_s,
-                        SignImmD => SignImmD_s,
-                        RD1D     => RD1D_s,
-                        RD2D     => RD2D_s
+                        RtD      => RtD_out_s,
+                        RdD      => RdD_out_s,
+                        SignImmD => SignImmD_out_s,
+                        RD1D     => RD1D_out_s,
+                        RD2D     => RD2D_out_s
                     );
+    ID_EX1: ID_EX port map(
+                    RtD_in         => RtD_out_s,
+                    RdD_in         => RdD_out_s,
+                    SignImm_in     => SignImmD_out_s,
+                    RD1_in         => RD1D_out_s,
+                    RD2_in         => RD2D_out_s,
+                    PCPlus4_in     => PCPlus4IFID_out_s,
+                    MemToReg_in    => MemToReg,
+                    MemWrite_in    => MemWrite,
+                    Branch_in      => Branch,
+                    AluSrc_in      => AluSrc,
+                    RegDst_in      => RegDst,
+                    RegWrite_in    => RegWrite,
+                    Jump_in        => Jump,
+                    alucontrol_in  => AluControl,
+                    clk            => clk,
+                    PCPlus4_out    => PCPlus4IDEX_out_s,
+                    MemToReg_out   => MemToRegIDEX_out_s,
+                    MemWrite_out   => MemWriteIDEX_out_s,
+                    Branch_out     => BranchIDEX_out_s,
+                    AluSrc_out     => AluSrcIDEX_out_s,
+                    RegDst_out     => RegDstIDEX_out_s,
+                    RegWrite_out   => RegWriteIDEX_out_s,
+                    Jump_out       => JumpIDEX_out_s,
+                    alucontrol_out => AluControlIDEX_out_s,
+                    RtD_out        => RtIDEX_out_s,
+                    RdD_out        => RdIDEX_out_s,
+                    SignImm_out    => SignImmIDEX_out_s,
+                    RD1_out        => RD1IDEX_out_s,
+                    RD2_out        => RD2IDEX_out_s
+                );
     Execute1: execute port map(
-                        RD1E       => RD1D_s,
-                        RD2E       => RD2D_s,
-                        PCPlus4E   => PCPlus4F_s,
-                        SignImmE   => SignImmD_s,
-                        RtE        => RtD_s,
-                        RdE        => RdD_s,
-                        RegDst     => RegDst,
-                        AluSrc     => AluSrc,
-                        AluControl => AluControl,
-                        WriteRegE  => A3E_s,
-                        ZeroE      => ZeroE_s,
-                        AluOutE    => AluOutE_s,
-                        WriteDataE => WriteDataE_s,
-                        PCBranchE  => PCBranchE_s
+                        RD1E       => RD1IDEX_out_s,
+                        RD2E       => RD2IDEX_out_s,
+                        PCPlus4E   => PCPlus4IDEX_out_s,
+                        SignImmE   => SignImmIDEX_out_s,
+                        RtE        => RtIDEX_out_s,
+                        RdE        => RdIDEX_out_s,
+                        RegDst     => RegDstIDEX_out_s,
+                        AluSrc     => AluSrcIDEX_out_s,
+                        AluControl => AluControlIDEX_out_s,
+                        WriteRegE  => A3E_out_s,
+                        ZeroE      => ZeroE_out_s,
+                        AluOutE    => AluOutE_out_s,
+                        WriteDataE => WriteDataE_out_s,
+                        PCBranchE  => PCBranchE_out_s
+                    );
+    EX_MEM1: EX_MEM port map(
+                        Zero_in       => ZeroE_out_s,
+                        AluOut_in     => AluOutE_out_s,
+                        WriteData_in  => WriteDataE_out_s,
+                        WriteReg_in   => A3E_out_s,
+                        PCBranch_in   => PCBranchE_out_s,
+                        RegWrite_in   => RegWriteIDEX_out_s,
+                        MemToReg_in   => MemToRegIDEX_out_s,
+                        MemWrite_in   => MemWriteIDEX_out_s,
+                        Jump_in       => JumpIDEX_out_s,
+                        Branch_in     => BranchIDEX_out_s,
+                        clk           => clk,
+                        RegWrite_out  => RegWriteEXMEM_out_s,
+                        MemToReg_out  => MemToRegEXMEM_out_s,
+                        MemWrite_out  => MemWriteEXMEM_out_s,
+                        Jump_out      => JumpEXMEM_out_s,
+                        Branch_out    => BranchEXMEM_out_s,
+                        Zero_out      => ZeroEXMEM_out_s,
+                        AluOut_out    => AluOutEXMEM_out_s,
+                        WriteData_out => WriteDataEXMEM_out_s,
+                        WriteReg_out  => A3EXMEM_out_s,
+                        PCBranch_out  => PCBranchEXMEM_out_s
                     );
     Memory1: memory port map(
-                        AluOutM    => AluOutE_s,
-                        WriteDataM => WriteDataE_s,
-                        ZeroM      => ZeroE_s,
-                        MemWrite   => MemWrite,
-                        Branch     => Branch,
+                        AluOutM    => AluOutEXMEM_out_s,
+                        WriteDataM => WriteDataEXMEM_out_s,
+                        ZeroM      => ZeroEXMEM_out_s,
+                        MemWrite   => MemWriteEXMEM_out_s,
+                        Branch     => BranchEXMEM_out_s,
                         clk        => clk,
                         dump       => dump,
-                        ReadDataM  => ReadDataM_s,
+                        ReadDataM  => ReadDataM_out_s,
                         PCSrcM     => PCSrcM_s
                     );
+    MEM_WB1: MEM_WB port map(
+                        AluOut_in    => AluOutEXMEM_out_s,
+                        ReadData_in  => ReadDataM_out_s,
+                        WriteReg_in  => A3EXMEM_out_s,
+                        RegWrite_in  => RegWriteEXMEM_out_s,
+                        MemToReg_in  => MemToRegEXMEM_out_s,
+                        clk          => clk,
+                        RegWrite_out => RegWriteMEMEB_out_s,
+                        MemToReg_out => MemToRegMEMWB_out_s,
+                        AluOut_out   => AluOutMEMWB_out_s,
+                        ReadData_out => ReadDataMEMWB_out_s,
+                        WriteReg_out => A3MEMWB_out_s
+                    );
     WriteBack1: writeback port map(
-                            AluOutW   => AluOutE_s,
-                            ReadDataW => ReadDataM_s,
-                            MemToReg  => MemToReg,
-                            ResultW   => ResultW_s --changing
+                            AluOutW   => AluOutEXMEM_out_s,
+                            ReadDataW => ReadDataMEMWB_out_s,
+                            MemToReg  => MemToRegMEMWB_out_s,
+                            ResultW   => ResultW_s
                         );
-instr <= instrF_s;
+    instr <= InstrF_out_s;
+
 end architecture;
 
 
